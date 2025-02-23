@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useColorPalette } from "../utils/useColorPalette";
 import { Loader } from "../components/Loader";
 import { FlatList } from "react-native-gesture-handler";
+import * as Haptics from "expo-haptics";
 
 type ActiveQuestListProps = Record<string, never>;
 
@@ -20,14 +21,15 @@ export const ActiveQuestList: React.FC<ActiveQuestListProps> = _ => {
 
     const createQuest = React.useCallback(() => {
         navigation.navigate("CreateQuest");
+        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }, [navigation]);
 
     const goToCompletedQuests = React.useCallback(() => {
         navigation.navigate("CompletedQuestList");
+        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }, [navigation]);
 
     if (questStore.loading) {
-        // TODO: Loading view
         return <Loader size="large" />;
     }
 

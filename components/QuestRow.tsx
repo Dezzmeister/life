@@ -4,6 +4,7 @@ import Swipeable, { type SwipeableMethods } from "react-native-gesture-handler/R
 import { Icon, Text } from "@rneui/base";
 import { useColorPalette } from "../utils/useColorPalette";
 import type { Quest, QuestArgs } from "../utils/quest";
+import * as Haptics from "expo-haptics";
 
 type ActiveQuestRowProps = {
     quest: Quest;
@@ -40,7 +41,13 @@ export const ActiveQuestRow: React.FC<ActiveQuestRowProps> = ({ quest, onDelete,
                 onPress: onDelete
             }
         ]);
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
     }, [title, onDelete]);
+
+    const claimQuest = React.useCallback(() => {
+        onClaim();
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }, [onClaim]);
 
     return (
         <View style={styles.outerContainer}>
@@ -62,7 +69,7 @@ export const ActiveQuestRow: React.FC<ActiveQuestRowProps> = ({ quest, onDelete,
                         </Text>
                     </View>
                 )}
-                onSwipeableWillOpen={dir => (dir === "left" ? onClaim() : confirmDelete())}
+                onSwipeableWillOpen={dir => (dir === "left" ? claimQuest() : confirmDelete())}
                 containerStyle={styles.container}
                 rightThreshold={150}
                 leftThreshold={120}

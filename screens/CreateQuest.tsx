@@ -8,6 +8,7 @@ import { useColorPalette } from "../utils/useColorPalette";
 import { useNavigation } from "@react-navigation/native";
 import { InactiveQuestRow } from "../components/QuestRow";
 import { Loader } from "../components/Loader";
+import * as Haptics from "expo-haptics";
 
 type CreateQuestProps = Record<string, never>;
 
@@ -41,6 +42,7 @@ export const CreateQuest: React.FC<CreateQuestProps> = _ => {
         };
         questStore.createQuest(questArgs);
         navigator.goBack();
+        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     }, [navigator, questStore, questTitle, questXp, questDesc]);
 
     if (questStore.loading) {

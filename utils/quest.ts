@@ -36,22 +36,10 @@ type LoadingQuestStore = {
 
 type QuestStore = LoadedQuestStore | LoadingQuestStore;
 
-const initialQuests = [
-    {
-        id: 1,
-        xp: 40,
-        title: "Quest 1",
-        desc: "Many words of text. This is placeholder text, and it should take up multiple lines. This is one long quest description"
-    },
-    { id: 2, xp: 50, title: "Quest 2", desc: "Item 2" },
-    { id: 3, xp: 20, title: "Quest 3", desc: "Item 3" },
-    { id: 4, xp: 40, title: "Papers", desc: "Take out the papers and the trash" },
-    { id: 5, xp: 15, title: "Cash", desc: "Or you don't get no spending cash" },
-    { id: 6, xp: 62, title: "Kitchen", desc: "If you don't scrub that kitchen floor" },
-    { id: 7, xp: 19, title: "Rock", desc: "You ain't gonna rock and roll no more" },
-    { id: 8, xp: 20, title: "Sock", desc: "Get some new socks" },
-    { id: 9, xp: 28, title: "Lock", desc: "Pick some phat locks" }
-];
+type InternalQuestStore = QuestStore & {
+    register(update: (i: number) => void): number;
+    unregister(id: number): void;
+};
 
 const { getCurrentLevel, getTotalXpRequirement } = (() => {
     const f = 1.05; // Progression factor
@@ -89,11 +77,6 @@ const { getCurrentLevel, getTotalXpRequirement } = (() => {
         getTotalXpRequirement
     };
 })();
-
-type InternalQuestStore = QuestStore & {
-    register(update: (i: number) => void): number;
-    unregister(id: number): void;
-};
 
 const questStore = ((): InternalQuestStore => {
     type SerializedQuestStore = {

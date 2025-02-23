@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Icon, Text } from "@rneui/base";
 import { useColorPalette } from "../utils/useColorPalette";
 import { useNavigation } from "@react-navigation/native";
+import * as Haptics from "expo-haptics";
 
 type SimpleHeaderProps = {
     title: string;
@@ -15,6 +16,7 @@ export const SimpleHeader: React.FC<SimpleHeaderProps> = ({ title, backButton })
 
     const goBack = React.useCallback(() => {
         navigation.goBack();
+        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }, [navigation]);
 
     return (
